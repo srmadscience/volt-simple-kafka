@@ -46,17 +46,16 @@ fi
 cd ../ddl
 sqlcmd --servers=${VOLTHOST} < create_db.sql
 
+java  ${JVMOPTS}  -jar ../jars/addtodeploymentdotxml.jar ${VOLTHOST}  deployment ../scripts/export_and_import.xml
 
 cd /Users/dwrolfe/Downloads/kafka_2.13-2.6.0/bin
 sh kafka-topics.sh --bootstrap-server localhost:9092 --list
 sh kafka-console-producer.sh --bootstrap-server localhost:9092 --topic UPSERT_DRIVERS  < ${THISDIR}/drivers.csv
 sh kafka-console-producer.sh --bootstrap-server localhost:9092 --topic UPSERT_VEHICLES < ${THISDIR}/vehicles.csv
+
+echo 'joe bloggs','abc123',151,Vroom | sh kafka-console-producer.sh --bootstrap-server localhost:9092 --topic REPORT_USAGE
+sleep 10
+echo 'joe bloggs','abc123',151,END| sh kafka-console-producer.sh --bootstrap-server localhost:9092 --topic REPORT_USAGE
+
 cd $THISDIR
 
-#cd ../scripts
-#$HOME/bin/reload_dashboards.sh ChargeLt.json
-
-#java  ${JVMOPTS}  -jar ../jars/addtodeploymentdotxml.jar `cat $HOME/.vdbhostnames`  deployment ../scripts/export_and_import.xml
-
-#cd ../jars
-#java ${JVMOPTS} -jar CreateChargingDemoData.jar `cat $HOME/.vdbhostnames`  $USERCOUNT 30 100000
