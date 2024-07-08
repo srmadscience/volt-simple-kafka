@@ -1,0 +1,7 @@
+<topics enabled="true">
+<topic name="UPSERT_DRIVERS" procedure="drivers.UPSERT">
+</topic>
+<topic name="UPSERT_VEHICLES" procedure="vehicles.UPSERT" />
+<topic name="REPORT_USAGE" procedure="ReportUsage" />
+<topic name="NAUGHTY_DRIVER_TOPIC" />
+</topics>
