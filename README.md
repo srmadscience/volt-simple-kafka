@@ -40,7 +40,7 @@ So a valid message would be:
 
 ````
 joe bloggs,abc123,151,Vroom
-```
+````
 
 Comment is only important at the end of a rental, when it's 'END'.
 
