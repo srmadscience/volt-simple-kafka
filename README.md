@@ -69,7 +69,8 @@ As usage arrives we pass it to ReportUsage, which decides what to do with it. No
 2. VIN number not in the vehicle table
 3. Driver drove faster than allowed.
 
-In each case these result in a message to the Topic 'naughty_driver_stream':
+In each case these result in a message to the Topic 'naughty_driver_stream'
+
 
 ````
 CREATE STREAM naughty_driver_stream 
@@ -83,7 +84,5 @@ EXPORT TO TOPIC naughty_driver_topic
 ,drive_max_vehicles_24_hours bigint not null
 ,message_comment  varchar(80));
 ````
-
-
 
 
