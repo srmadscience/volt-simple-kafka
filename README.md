@@ -63,7 +63,7 @@ USING TTL 5 DAYS ON COLUMN end_time
 
 ## Running
 
-As usage arrives we pass it to (ReportUsage)[serverSrc/ReportUsage.java], which decides what to do with it. Normally we just update driver_car_usage, but there are exceptions:
+As usage arrives we pass it to [ReportUsage](serverSrc/ReportUsage.java), which decides what to do with it. Normally we just update driver_car_usage, but there are exceptions:
 
 1. Driver name not in the driver table
 2. VIN number not in the vehicle table
