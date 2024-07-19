@@ -21,7 +21,6 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-
 import java.util.Date;
 
 import org.voltdb.SQLStmt;
@@ -55,8 +54,12 @@ public class ReportUsage extends VoltProcedure {
     public static final SQLStmt endRental = new SQLStmt(
             "UPDATE driver_car_use  SET max_speed = ?,status = ?, end_time = NOW WHERE driver_name = ? AND vin = ? AND end_time = ?;");
 
+    /**
+     * Find drivers who either are speeding and either completed a rental this hour,
+     * or have an ongoing rental
+     */
     public static final SQLStmt checkSpeeding = new SQLStmt("select * from driver_activity_hour "
-            + "WHERE driver_name = ? AND end_time = TRUNCATE(hour, NOW) AND max_speed > ?;");
+            + "WHERE driver_name = ? AND (end_time = TRUNCATE(hour, NOW) OR end_time > NOW) AND max_speed > ?;");
 
     @SuppressWarnings("deprecation")
     public static final TimestampType THE_FUTURE = new TimestampType(new Date(1124, 1, 1, 1, 04));
@@ -142,8 +145,16 @@ public class ReportUsage extends VoltProcedure {
         if (speedHistory.advanceRow()) {
             long actualMaxSpeed = speedHistory.getLong("max_speed");
 
-            reportProblem(driverName, vin, actualMaxSpeed, -1,
-                    "Limited to " + driverMaxAllowedSpeed + " but drove at " + actualMaxSpeed);
+            if (reportedSpeed == actualMaxSpeed) {
+                reportProblem(driverName, vin, actualMaxSpeed, -1,
+                        "Limited to " + driverMaxAllowedSpeed + " but drove at " + reportedSpeed);
+
+            } else {
+                reportProblem(driverName, vin, actualMaxSpeed, -1, "Limited to " + driverMaxAllowedSpeed
+                        + " but drove at " + reportedSpeed + " and has driven at " + actualMaxSpeed);
+
+            }
+
         }
 
         return voltExecuteSQL(true);
